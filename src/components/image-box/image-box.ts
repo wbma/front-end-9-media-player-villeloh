@@ -1,5 +1,5 @@
 import { DlImage } from './../../models/DlImage';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'image-box',
@@ -7,11 +7,9 @@ import { Component } from '@angular/core';
 })
 export class ImageBoxComponent {
 
+  @Input()
   img: any;
 
-  constructor(dlImage: DlImage) {
-
-    this.img = dlImage;
+  constructor() {
   }
-
 }

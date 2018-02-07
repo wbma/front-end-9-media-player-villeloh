@@ -5,20 +5,20 @@
 
 export class User {
 
-  userName: string;
-  passWord: string;
+  username: string;
+  password: string;
   email: string;
 
-  constructor(userName: string, passWord: string, email: string) {
+  constructor(username: string = '', password: string = '', email: string = '') {
 
-    this.userName = userName;
-    this.passWord = passWord;
+    this.username = username;
+    this.password = password;
     this.email = email;
   }
 
   alterUser(stat: string, newValue: string) {
 
-    if (stat === 'userName' || stat === 'passWord' || stat === 'email') {
+    if (stat === 'username' || stat === 'password' || stat === 'email') {
       this[stat] = newValue;
     } else {
       console.log('invalid stat while altering user!');

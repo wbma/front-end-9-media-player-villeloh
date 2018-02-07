@@ -1,11 +1,14 @@
+import { Page } from 'ionic-angular/navigation/nav-util';
+import { ImgListPage } from './../img-list/img-list';
+import { UserProvider } from './../../providers/UserProvider';
+import { User } from './../../models/User';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http/src/response';
 
 /**
- * Generated class for the RegisterPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
+ * Page for registering a new user. Upon successful registering,
+ * user is immediately logged in and redirected to the main image list page.
  */
 
 @IonicPage()
@@ -15,11 +18,32 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class RegisterPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  baseApiUrl = 'http://media.mw.metropolia.fi/wbma/';
+
+  user: User = new User();
+  imgListPage: Page = ImgListPage;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, public userProvider: UserProvider) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad RegisterPage');
   }
 
-}
+  register(user: User) {
+
+    this.userProvider.registerUser(user)
+    .subscribe(res => {
+
+      console.log('Register response: ' + JSON.stringify(res));
+      this.userProvider.loginUser(user)
+      .subscribe(res => {
+
+        localStorage.setItem('token', res['token']);
+        this.navCtrl.push(this.imgListPage);
+      },
+      (error: HttpErrorResponse) => console.log(error.error.message));
+    }
+    ,
+    (error: HttpErrorResponse) => console.log(error.error.message));
+  } // end register()
+} // end class

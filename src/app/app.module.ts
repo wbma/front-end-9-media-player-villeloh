@@ -1,15 +1,18 @@
+
+import { ImageBoxComponent } from './../components/image-box/image-box';
+import { ImgListPage } from './../pages/img-list/img-list';
 import { RegisterPage } from './../pages/register/register';
 import { LoginPage } from './../pages/login/login';
 import { UserProvider } from './../providers/UserProvider';
 import { ImgProvider } from './../providers/ImgProvider';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
-
+import { IonicApp, IonicErrorHandler, IonicModule, NavController } from 'ionic-angular';
+import {HttpClientModule} from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
-
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -19,11 +22,15 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     HomePage,
     ListPage,
     LoginPage,
-    RegisterPage
+    RegisterPage,
+    ImgListPage,
+    ImageBoxComponent
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    HttpClientModule,
+    FormsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -31,7 +38,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     HomePage,
     ListPage,
     LoginPage,
-    RegisterPage
+    RegisterPage,
+    ImgListPage,
+    ImageBoxComponent
   ],
   providers: [
     StatusBar,

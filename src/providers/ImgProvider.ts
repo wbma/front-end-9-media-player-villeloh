@@ -24,7 +24,18 @@ export class ImgProvider {
     return this.http.get<object[]>(this.baseApiUrl + 'media/user/' + id, options);
   } // end getImagesByUserId()
 
-  uploadImage() {}
+  uploadImage(formData: FormData) {
+
+    const url = this.baseApiUrl + 'media';
+
+    // adding Content-Type: multipart/form-data gives an error... while if it's left out, it's added
+    // automatically without any problems. -.-
+    const options = {
+      headers: new HttpHeaders().set('x-access-token', localStorage.getItem('token'))
+    };
+
+    return this.http.post(url, formData, options);
+  } // end uploadImage()
 
   updateImage() {}
 

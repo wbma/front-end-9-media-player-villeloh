@@ -1,3 +1,5 @@
+import { Directive, Component } from "@angular/core/src/metadata/directives";
+
 
 /**
  * Data model class for custom image objects.

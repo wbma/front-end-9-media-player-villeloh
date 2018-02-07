@@ -4,6 +4,7 @@ import { UserProvider } from './../../providers/UserProvider';
 import { ImgProvider } from './../../providers/ImgProvider';
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http/src/response';
 
 @IonicPage()
 @Component({
@@ -14,6 +15,10 @@ export class ImgListPage {
 
   imageList: DlImage[];
 
+  file: File;
+  title: string;
+  description: string;
+
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -23,6 +28,7 @@ export class ImgListPage {
 
   ionViewDidLoad() {
 
+    this.imageList = [];
     this.buildImageList();
   }
 
@@ -40,6 +46,7 @@ export class ImgListPage {
 
            // no idea if this actually works... seems pretty convoluted, but I need to map the regular objects
            // that arrive from the server to DlImage objects
+
           let dlImg = new DlImage();
           dlImg.convertObjToDlImg(imgs[i]);
           this.imageList[i] = dlImg;
@@ -47,4 +54,26 @@ export class ImgListPage {
       });
     });
   } // end buildImageList()
+
+  upload() {
+
+    const formData: FormData = new FormData();
+    formData.append('file', this.file);
+    formData.append('title', this.title);
+    formData.append('description', this.description);
+
+    this.imgProvider.uploadImage(formData)
+    .subscribe(res => {
+
+      console.log('Upload response: ' + JSON.stringify(res));
+      this.buildImageList(); // inefficient... should just add it to the page. caching etc is needed as well...
+    },
+    (error: HttpErrorResponse) => console.log(error.error.message));
+  } // end upload()
+
+  getFile(event: any) {
+
+    this.file = event.target.files[0];
+  }
+
 } // end class

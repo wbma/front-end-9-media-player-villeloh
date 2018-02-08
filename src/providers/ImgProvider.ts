@@ -39,8 +39,14 @@ export class ImgProvider {
 
   updateImage() {}
 
-  deleteImage() {}
+  deleteImage(imgId: number) {
 
+    const url = this.baseApiUrl + 'media/' + imgId;
 
+    const options = {
+      headers: new HttpHeaders().set('x-access-token', localStorage.getItem('token'))
+    };
 
+    return this.http.get(url, options);
+  } // end deleteImage()
 } // end class

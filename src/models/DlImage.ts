@@ -16,11 +16,11 @@ export class DlImage {
   thumbnails: Object;
 
   constructor(
-    title: string = '', filename: string = '', file_id: number = 0, user_id: number = 0,
-    desc: string = '', time_added: string = '', thumbnails: Object = {}) {
+    title: string = '', filename: string = '', description: string = '', time_added: string = '',
+    user_id: number = 0, file_id: number = 0, thumbnails: Object = {}) {
 
     this.title = title;
-    this.description = desc;
+    this.description = description;
     this.filename = filename;
     this.file_id = file_id;
     this.user_id = user_id;
@@ -28,10 +28,12 @@ export class DlImage {
     this.thumbnails = thumbnails;
   }
 
+  /*
   convertObjToDlImg(obj: object) {
 
     Object.assign(this, obj); // does 'this' have the correct reference here..?
   }
+  */
 
   alterDlImg(stat: string, newValue: string) {
 

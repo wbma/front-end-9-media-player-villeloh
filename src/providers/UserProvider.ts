@@ -47,7 +47,7 @@ export class UserProvider {
 
   getUserInfo() {
 
-    const token = localStorage.getItem('token'); // will only be called when the user is logged in
+    const token = localStorage.getItem('token') || ''; // non-ideal; should return 'empty' Observable if no token!
 
     const options = {
       headers: new HttpHeaders().set('Content-Type', 'application/json').set('x-access-token', token)

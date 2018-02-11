@@ -23,8 +23,9 @@ export class HomePage {
   ionViewDidLoad() {
 
     this.userProvider.getUserInfo()
-    .subscribe(res =>{
+    .subscribe(user => {
 
+      localStorage.setItem('user_id', user['user_id']); // set it once on login so it can be used anywhere
       this.goToPage(this.imgListPage); // if there is a valid token, go directly to imgListPage
     },
     (error: HttpErrorResponse) =>

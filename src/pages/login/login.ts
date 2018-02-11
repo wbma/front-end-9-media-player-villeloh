@@ -24,11 +24,18 @@ export class LoginPage {
 
   login(user: User) {
 
+    // TODO: clear this mess with async / await...
     this.userProvider.loginUser(user)
     .subscribe(res => {
 
       localStorage.setItem('token', res['token']);
-      this.navCtrl.push(this.imgListPage);
+
+      this.userProvider.getUserInfo()
+      .subscribe(user => {
+
+        localStorage.setItem('user_id', user['user_id']); // set it once on login so it can be used anywhere
+        this.navCtrl.push(this.imgListPage);
+      });
     },
     (error: HttpErrorResponse) => console.log(error.error.message));
   } // end login()

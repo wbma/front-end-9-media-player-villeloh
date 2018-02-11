@@ -1,4 +1,5 @@
-
+import { ThumbnailPipe } from './../pipes/thumbnail/thumbnail';
+import { ImgModalComponent } from './../components/img-modal/img-modal';
 import { ImageBoxComponent } from './../components/image-box/image-box';
 import { ImgListPage } from './../pages/img-list/img-list';
 import { RegisterPage } from './../pages/register/register';
@@ -24,7 +25,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     LoginPage,
     RegisterPage,
     ImgListPage,
-    ImageBoxComponent
+    ImageBoxComponent,
+    ImgModalComponent,
+    ThumbnailPipe
   ],
   imports: [
     BrowserModule,
@@ -40,7 +43,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     LoginPage,
     RegisterPage,
     ImgListPage,
-    ImageBoxComponent
+    ImageBoxComponent,
+    ImgModalComponent
   ],
   providers: [
     StatusBar,

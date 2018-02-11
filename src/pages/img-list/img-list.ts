@@ -1,10 +1,12 @@
+import { ThumbnailPipe } from './../../pipes/thumbnail/thumbnail';
 import { ImageBoxComponent } from './../../components/image-box/image-box';
 import { DlImage } from './../../models/DlImage';
 import { UserProvider } from './../../providers/UserProvider';
 import { ImgProvider } from './../../providers/ImgProvider';
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http/src/response';
+import { ImgModalComponent } from '../../components/img-modal/img-modal';
 
 @IonicPage()
 @Component({
@@ -23,45 +25,35 @@ export class ImgListPage {
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
+    public modalCtrl: ModalController,
     public imgProvider: ImgProvider,
     public userProvider: UserProvider) {
   }
 
   ionViewDidLoad() {
 
+    // TODO: implement caching so that the list is not fetched every time when re-entering the page
     this.imageList = [];
-    this.buildImageList('large');
+    this.buildImageList();
   }
 
-  buildImageList(imgSize: string) {
+  buildImageList() {
 
-    const SizeEnum = Object.freeze({'small': '-tn160.png', 'regular': '-tn320.png', 'large': '-tn640.png'});
-
-    let tempArray;
-    let tempStr;
-    let filename;
     let dlImg;
 
-    this.userProvider.getUserInfo()
-    .subscribe(user => {
+    const userId = Number(localStorage.getItem('user_id')) || 0; // should exist since we came here from login / register
+    console.log("id: " + userId);
 
-      const userId = user['user_id'];
+    this.imgProvider.getImagesByUserId(userId)
+    .subscribe(imgs => {
 
-      this.imgProvider.getImagesByUserId(userId)
-      .subscribe(imgs => {
+      for (let i = 0; i < imgs.length; i++) {
 
-        for (let i = 0; i < imgs.length; i++) {
-
-          tempArray = imgs[i]['filename'].split('.'); // '[pic png]'
-          tempStr = tempArray[0]; // 'pic'
-          imgs[i]['filename'] = this.baseApiUrl + 'uploads/' + tempStr + SizeEnum[imgSize]; // replace original image url
-
-          dlImg = new DlImage(imgs[i]['title'], imgs[i]['filename'], imgs[i]['description'], imgs[i]['time_added'],
-          imgs[i]['user_id'], imgs[i]['file_id'], imgs[i]['thumbnails']);
-          this.imageList[i] = dlImg;
-        }
-      });
-    });
+        dlImg = new DlImage(imgs[i]['title'], imgs[i]['filename'], imgs[i]['description'], imgs[i]['time_added'],
+        imgs[i]['user_id'], imgs[i]['file_id'], imgs[i]['thumbnails']);
+        this.imageList[i] = dlImg;
+      }
+    }); // end subscribe()
   } // end buildImageList()
 
   upload() {
@@ -82,7 +74,7 @@ export class ImgListPage {
 
       setTimeout(function() {
 
-        storedThis.buildImageList('large'); // inefficient... should just add it to the page. caching etc is needed as well...
+        storedThis.buildImageList(); // inefficient... should just add it to the page. caching etc is needed as well...
       }, delay);
     },
     (error: HttpErrorResponse) => console.log(error.error.message));
@@ -93,15 +85,9 @@ export class ImgListPage {
     this.file = event.target.files[0];
   }
 
-  delete(event) {
+  presentModal(dlImage: DlImage) {
 
-    console.log("image.target :" + event.target);
-    const id: number = event.target.img.file_id;
-
-    this.imgProvider.deleteImage(id)
-    .subscribe(res => {
-      console.log("deleted img # " + id);
-    },
-    (error: HttpErrorResponse) => console.log(error.error.message));
-  } // end delete()
+    let imgModal = this.modalCtrl.create(ImgModalComponent, { dlImage: dlImage });
+    imgModal.present();
+  }
 } // end class

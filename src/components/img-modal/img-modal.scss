@@ -1,0 +1,23 @@
+img-modal {
+
+  * {
+    border: 2px solid red;
+  }
+
+  #close-icon {
+
+    font-size: 7rem;
+  }
+
+  .containerDiv {
+
+    padding: 2rem;
+    height: fit-content;
+  }
+
+  .closeButton {
+
+    float: right;
+  }
+
+}

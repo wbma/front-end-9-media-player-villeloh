@@ -47,6 +47,6 @@ export class ImgProvider {
       headers: new HttpHeaders().set('x-access-token', localStorage.getItem('token'))
     };
 
-    return this.http.get(url, options);
+    return this.http.delete(url, options);
   } // end deleteImage()
 } // end class

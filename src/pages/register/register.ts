@@ -31,6 +31,9 @@ export class RegisterPage {
 
   register(user: User) {
 
+    // three subscribes is a bit much... TODO: clear this up somehow -.-
+    // logging in the user gets the token, which is needed for getting id,
+    // so the mess seems unavoidable...
     this.userProvider.registerUser(user)
     .subscribe(res => {
 
@@ -39,7 +42,13 @@ export class RegisterPage {
       .subscribe(res => {
 
         localStorage.setItem('token', res['token']);
-        this.navCtrl.push(this.imgListPage);
+
+        this.userProvider.getUserInfo()
+        .subscribe(user => {
+
+          localStorage.setItem('user_id', user['user_id']); // set it once on login so it can be used anywhere
+          this.navCtrl.push(this.imgListPage);
+        });
       },
       (error: HttpErrorResponse) => console.log(error.error.message));
     }

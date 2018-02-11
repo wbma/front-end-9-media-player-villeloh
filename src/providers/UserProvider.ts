@@ -37,7 +37,9 @@ export class UserProvider {
     return this.http.post(url, body, this.options);
   } // end loginUser()
 
-  updateUser() {}
+  updateUser() {
+
+  }
 
   logoutUser() {
 

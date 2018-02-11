@@ -1,3 +1,4 @@
+import { ThumbnailPipe } from './../../pipes/thumbnail/thumbnail';
 import { DlImage } from './../../models/DlImage';
 import { Component, Input } from '@angular/core';
 

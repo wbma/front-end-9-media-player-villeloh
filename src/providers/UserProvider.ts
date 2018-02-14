@@ -57,4 +57,16 @@ export class UserProvider {
 
     return this.http.get(this.baseApiUrl + 'users/user', options);
   } // end getUserInfo()
+
+  getFavoritesOfUser() {
+
+    const options = {
+      headers: new HttpHeaders().set('x-access-token', localStorage.getItem('token'))
+    };
+
+    const url = this.baseApiUrl + 'favourites/';
+
+    return this.http.get<object[]>(url, options);
+  }
+
 } // end class

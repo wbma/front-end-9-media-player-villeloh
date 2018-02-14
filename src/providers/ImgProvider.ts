@@ -1,3 +1,4 @@
+import { DlImage } from './../models/DlImage';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -49,4 +50,12 @@ export class ImgProvider {
 
     return this.http.delete(url, options);
   } // end deleteImage()
+
+  getFavoritesOfFile(dlImage: DlImage) {
+
+    const file_id = dlImage.file_id;
+    const url = this.baseApiUrl + 'favourites/file/' + file_id;
+
+    return this.http.get<object[]>(url);
+  }
 } // end class
